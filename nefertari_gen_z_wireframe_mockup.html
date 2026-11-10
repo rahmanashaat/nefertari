@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nefertari Body Care - Gen Z Wireframe Mockup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#1B4D3E',
+                            light: '#EAF2EF',
+                            accent: '#D4A373',
+                            cream: '#FAF7F2',
+                            dark: '#11221A'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Readex Pro', 'Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Readex Pro', sans-serif; }
+        /* Hide scrollbar for horizontal story highlights and filter chips */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-brand-cream text-brand-dark antialiased selection:bg-brand-accent selection:text-white">
+
+    <!-- 1. Announcement Bar -->
+    <div class="bg-brand text-white text-xs py-2 px-4 text-center font-medium tracking-wide flex items-center justify-center gap-2 overflow-hidden">
+        <span class="inline-block animate-pulse">🌿</span>
+        <span>خصم 15% لأول أوردر + شحن مجاني للطلبات فوق 500 ج.م | كود: <strong class="underline underline-offset-2">GENZ15</strong></span>
+        <span class="hidden md:inline-block">✨</span>
+    </div>
+
+    <!-- 2. Minimalist Header with Instant Search & Cart Badge -->
+    <header class="sticky top-0 z-50 bg-brand-cream/90 backdrop-blur-md border-b border-brand/10 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
+            
+            <!-- Logo & Brand Name -->
+            <div class="flex items-center gap-3">
+                <button class="md:hidden text-brand text-xl p-1 focus:outline-none" onclick="toggleMobileMenu()">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                </button>
+                <a href="#" class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-2xl bg-brand text-white flex items-center justify-center font-bold text-lg shadow-sm">N</div>
+                    <div class="flex flex-col">
+                        <span class="font-bold text-lg leading-tight tracking-tight text-brand">NEFERTARI</span>
+                        <span class="text-[10px] uppercase tracking-widest text-brand-accent font-semibold">Body Care</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Instant Search Bar (Desktop) -->
+            <div class="hidden md:flex flex-1 max-w-md mx-6">
+                <div class="relative w-full">
+                    <input type="text" id="searchInput" placeholder="ابحثي عن مقشر، زبدة كاكاو، سيروم..." 
+                           class="w-full bg-white/80 border border-brand/15 rounded-full py-2.5 px-4 pr-11 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 transition-all shadow-inner"
+                           oninput="handleSearch(this.value)">
+                    <div class="absolute right-3.5 top-1/2 -translate-y-1/2 text-brand/50">
+                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    </div>
+                    <!-- Search Dropdown Suggestion Box -->
+                    <div id="searchDropdown" class="hidden absolute top-full mt-2 w-full bg-white rounded-2xl shadow-xl border border-brand/10 p-3 z-50">
+                        <p class="text-xs font-semibold text-brand/50 mb-2 px-2">ترندات البحث ⚡</p>
+                        <div class="flex flex-wrap gap-1.5 p-1">
+                            <span onclick="selectSearchTag('مقشر القهوة')" class="cursor-pointer bg-brand-light hover:bg-brand text-brand hover:text-white text-xs px-3 py-1.5 rounded-full transition-all">☕ مقشر القهوة</span>
+                            <span onclick="selectSearchTag('زبدة الشيا')" class="cursor-pointer bg-brand-light hover:bg-brand text-brand hover:text-white text-xs px-3 py-1.5 rounded-full transition-all">🥥 زبدة الشيا</span>
+                            <span onclick="selectSearchTag('عناية بالجسم')" class="cursor-pointer bg-brand-light hover:bg-brand text-brand hover:text-white text-xs px-3 py-1.5 rounded-full transition-all">🌿 عناية بالجسم</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Utility Icons (Wishlist & Cart) -->
+            <div class="flex items-center gap-3">
+                <button onclick="openWishlistModal()" class="relative w-10 h-10 rounded-full bg-white border border-brand/15 flex items-center justify-center text-brand hover:bg-brand hover:text-white transition-all shadow-sm">
+                    <i class="fa-regular fa-heart text-sm"></i>
+                    <span id="wishlistCount" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                </button>
+                <button onclick="openCartModal()" class="relative flex items-center gap-2 bg-brand text-white px-4 py-2.5 rounded-full hover:bg-brand-dark transition-all shadow-md group">
+                    <i class="fa-solid fa-bag-shopping text-sm group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-semibold hidden sm:inline">السلة</span>
+                    <span id="cartCount" class="bg-brand-accent text-white text-[11px] px-2 py-0.5 rounded-full font-bold">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Bar -->
+        <div class="md:hidden px-4 pb-3">
+            <div class="relative w-full">
+                <input type="text" placeholder="ابحثي عن منتجك المفضل..." 
+                       class="w-full bg-white border border-brand/15 rounded-full py-2 px-4 pr-10 text-xs focus:outline-none focus:ring-1 focus:ring-brand">
+                <div class="absolute right-3 top-1/2 -translate-y-1/2 text-brand/50">
+                    <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- 3. Horizontal Story Highlights (Stories Style) -->
+        <section class="mb-8">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-brand/60">قصص نفرتاري 🎥</h2>
+                <span class="text-[11px] text-brand-accent font-medium">اضفطي لمشاهدة الـ Vibes</span>
+            </div>
+            <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2 pt-1">
+                <!-- Story Item 1 -->
+                <div onclick="openStoryModal('روتين الاستحمام 🚿', 'استمتعي برائحة الفانيليا وجلسة استرخاء منزلية متكاملة بمنتجاتنا العضوية 100%.')" class="flex flex-col items-center flex-shrink-0 cursor-pointer group">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-[3px] bg-gradient-to-tr from-brand-accent via-rose-400 to-brand group-hover:scale-105 transition-transform">
+                        <div class="w-full h-full rounded-full bg-white p-[2px] overflow-hidden">
+                            <img src="https://placehold.co/150x150/1B4D3E/FFFFFF?text=Routine" alt="Routine" class="w-full h-full object-cover rounded-full">
+                        </div>
+                    </div>
+                    <span class="text-xs font-medium mt-1.5 text-brand group-hover:text-brand-accent transition-colors">الروتين اليومي</span>
+                </div>
+                <!-- Story Item 2 -->
+                <div onclick="openStoryModal('100% طبيعي 🍃', 'مكونات نقية مستخلصة مباشرة من الطبيعة المصرية بدون أي كيماويات ضارة.')" class="flex flex-col items-center flex-shrink-0 cursor-pointer group">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-[3px] bg-gradient-to-tr from-brand-accent via-rose-400 to-brand group-hover:scale-105 transition-transform">
+                        <div class="w-full h-full rounded-full bg-white p-[2px] overflow-hidden">
+                            <img src="https://placehold.co/150x150/EAF2EF/1B4D3E?text=Natural" alt="Natural" class="w-full h-full object-cover rounded-full">
+                        </div>
+                    </div>
+                    <span class="text-xs font-medium mt-1.5 text-brand group-hover:text-brand-accent transition-colors">مكونات طبيعية</span>
+                </div>
+                <!-- Story Item 3 -->
+                <div onclick="openStoryModal('ريفيوهات التيك توك 📱', 'شوفي تجارب البنات الحقيقية بعد استخدام مقشر القهوة وزبدة الجسم.')" class="flex flex-col items-center flex-shrink-0 cursor-pointer group">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-[3px] bg-gradient-to-tr from-brand-accent via-rose-400 to-brand group-hover:scale-105 transition-transform">
+                        <div class="w-full h-full rounded-full bg-white p-[2px] overflow-hidden">
+                            <img src="https://placehold.co/150x150/D4A373/FFFFFF?text=TikTok" alt="TikTok" class="w-full h-full object-cover rounded-full">
+                        </div>
+                    </div>
+                    <span class="text-xs font-medium mt-1.5 text-brand group-hover:text-brand-accent transition-colors">آراء البنات</span>
+                </div>
+                <!-- Story Item 4 -->
+                <div onclick="openStoryModal('عروض وكسرات ⚡', 'عروض حصرية لفترة محدودة على مجموعات الترطيب والعناية بالجسم.')" class="flex flex-col items-center flex-shrink-0 cursor-pointer group">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-[3px] bg-gradient-to-tr from-brand-accent via-rose-400 to-brand group-hover:scale-105 transition-transform">
+                        <div class="w-full h-full rounded-full bg-white p-[2px] overflow-hidden">
+                            <img src="https://placehold.co/150x150/11221A/FFFFFF?text=Deals" alt="Deals" class="w-full h-full object-cover rounded-full">
+                        </div>
+                    </div>
+                    <span class="text-xs font-medium mt-1.5 text-brand group-hover:text-brand-accent transition-colors">العروض</span>
+                </div>
+                <!-- Story Item 5 -->
+                <div onclick="openStoryModal('نصائح الجمال ✨', 'إزاي تحافظي على نعومة بشرتك طوال فصل الشتاء والصيف.')" class="flex flex-col items-center flex-shrink-0 cursor-pointer group">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-[3px] bg-gradient-to-tr from-brand-accent via-rose-400 to-brand group-hover:scale-105 transition-transform">
+                        <div class="w-full h-full rounded-full bg-white p-[2px] overflow-hidden">
+                            <img src="https://placehold.co/150x150/FAF7F2/1B4D3E?text=Tips" alt="Tips" class="w-full h-full object-cover rounded-full">
+                        </div>
+                    </div>
+                    <span class="text-xs font-medium mt-1.5 text-brand group-hover:text-brand-accent transition-colors">نصائح سريعة</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page Header & Interactive Filter Chips -->
+        <section class="mb-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-brand tracking-tight">منتجات العناية بالجسم ✨</h1>
+                    <p class="text-xs sm:text-sm text-brand/70 mt-1">اختاري ما يناسب بشرتك من مجموعة نفرتاري العضوية النقيّة</p>
+                </div>
+                
+                <!-- Sort Dropdown -->
+                <div class="flex items-center gap-2 self-start md:self-auto">
+                    <span class="text-xs font-semibold text-brand/60">ترتيب حسب:</span>
+                    <select class="bg-white border border-brand/15 text-xs text-brand font-medium rounded-xl px-3 py-2 focus:outline-none focus:ring-1 focus:ring-brand shadow-sm">
+                        <option>الأكثر مبيعاً 🔥</option>
+                        <option>السعر: من الأقل للأعلى</option>
+                        <option>السعر: من الأعلى للأقل</option>
+                        <option>الجديد كلياً ✨</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Filter Chips / Pills (Horizontal Scrollable) -->
+            <div class="flex gap-2 overflow-x-auto no-scrollbar py-1">
+                <button onclick="filterProducts('all', this)" class="filter-btn bg-brand text-white text-xs font-semibold px-4 py-2 rounded-full flex-shrink-0 transition-all shadow-sm">
+                    الكل (12)
+                </button>
+                <button onclick="filterProducts('bestseller', this)" class="filter-btn bg-white hover:bg-brand-light text-brand text-xs font-semibold px-4 py-2 rounded-full flex-shrink-0 border border-brand/15 transition-all">
+                    🔥 الأكثر مبيعاً
+                </button>
+                <button onclick="filterProducts('scrub', this)" class="filter-btn bg-white hover:bg-brand-light text-brand text-xs font-semibold px-4 py-2 rounded-full flex-shrink-0 border border-brand/15 transition-all">
+                    ☕ مقشرات الجسم
+                </button>
+                <button onclick="filterProducts('butter', this)" class="filter-btn bg-white hover:bg-brand-light text-brand text-xs font-semibold px-4 py-2 rounded-full flex-shrink-0 border border-brand/15 transition-all">
+                    🥥 زبدة وزيوت الترطيب
+                </button>
+                <button onclick="filterProducts('vegan', this)" class="filter-btn bg-white hover:bg-brand-light text-brand text-xs font-semibold px-4 py-2 rounded-full flex-shrink-0 border border-brand/15 transition-all">
+                    🌿 100% نباتي
+                </button>
+                <button onclick="filterProducts('soap', this)" class="filter-btn bg-white hover:bg-brand-light text-brand text-xs font-semibold px-4 py-2 rounded-full flex-shrink-0 border border-brand/15 transition-all">
+                    🧼 صابون طبيعي
+                </button>
+            </div>
+        </section>
+
+        <!-- 4. Clean Product Grid with Hover Effects & Quick Add -->
+        <section id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mb-16">
+            
+            <!-- Product Card 1 -->
+            <div class="product-card bg-white rounded-3xl p-3 sm:p-4 border border-brand/10 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative" data-category="scrub bestseller">
+                <div>
+                    <!-- Image Container with Badge & Wishlist -->
+                    <div class="relative bg-brand-light rounded-2xl overflow-hidden aspect-square mb-3">
+                        <img src="https://placehold.co/400x400/EAF2EF/1B4D3E?text=Coffee+Scrub" alt="مقشر القهوة" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-2.5 right-2.5 bg-brand text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow">الأكثر مبيعاً</span>
+                        <button onclick="toggleWishlist(this)" class="absolute top-2.5 left-2.5 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-brand hover:bg-rose-500 hover:text-white transition-all shadow-sm">
+                            <i class="fa-regular fa-heart text-xs"></i>
+                        </button>
+                        <!-- Quick Add Button Overlay on Hover -->
+                        <div class="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button onclick="addToCart('مقشر القهوة العضوي', 280, 'https://placehold.co/400x400/EAF2EF/1B4D3E?text=Coffee+Scrub')" class="w-full bg-brand hover:bg-brand-dark text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition-all">
+                                <i class="fa-solid fa-plus text-[10px]"></i> أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Product Info -->
+                    <div class="flex items-center gap-1 text-amber-500 text-xs mb-1">
+                        <i class="fa-solid fa-star"></i>
+                        <span class="font-bold text-brand text-xs">4.9</span>
+                        <span class="text-brand/40 text-[10px]">(120 تقييم)</span>
+                    </div>
+                    <h3 class="font-bold text-xs sm:text-sm text-brand mb-1 line-clamp-1">مقشر القهوة العضوي للجسم</h3>
+                    <p class="text-[11px] text-brand/60 mb-2">يزيل الجلد الميت وينشط الدورة الدموية</p>
+                </div>
+                <div class="flex items-center justify-between mt-2 pt-2 border-t border-brand/5">
+                    <div>
+                        <span class="text-xs text-brand/40 line-through ml-1.5">350 ج.م</span>
+                        <span class="text-sm font-extrabold text-brand">280 ج.م</span>
+                    </div>
+                    <button onclick="addToCart('مقشر القهوة العضوي', 280, 'https://placehold.co/400x400/EAF2EF/1B4D3E?text=Coffee+Scrub')" class="md:hidden w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Card 2 -->
+            <div class="product-card bg-white rounded-3xl p-3 sm:p-4 border border-brand/10 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative" data-category="butter vegan">
+                <div>
+                    <div class="relative bg-brand-light rounded-2xl overflow-hidden aspect-square mb-3">
+                        <img src="https://placehold.co/400x400/FAF7F2/D4A373?text=Shea+Butter" alt="زبدة الشيا الخام" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-2.5 right-2.5 bg-brand-accent text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow">100% نباتي</span>
+                        <button onclick="toggleWishlist(this)" class="absolute top-2.5 left-2.5 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-brand hover:bg-rose-500 hover:text-white transition-all shadow-sm">
+                            <i class="fa-regular fa-heart text-xs"></i>
+                        </button>
+                        <div class="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button onclick="addToCart('زبدة الشيا الخام الأصلية', 320, 'https://placehold.co/400x400/FAF7F2/D4A373?text=Shea+Butter')" class="w-full bg-brand hover:bg-brand-dark text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition-all">
+                                <i class="fa-solid fa-plus text-[10px]"></i> أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 text-amber-500 text-xs mb-1">
+                        <i class="fa-solid fa-star"></i>
+                        <span class="font-bold text-brand text-xs">4.8</span>
+                        <span class="text-brand/40 text-[10px]">(95 تقييم)</span>
+                    </div>
+                    <h3 class="font-bold text-xs sm:text-sm text-brand mb-1 line-clamp-1">زبدة الشيا الخام الأصلية</h3>
+                    <p class="text-[11px] text-brand/60 mb-2">ترطيب عميق يدوم 48 ساعة</p>
+                </div>
+                <div class="flex items-center justify-between mt-2 pt-2 border-t border-brand/5">
+                    <div>
+                        <span class="text-sm font-extrabold text-brand">320 ج.م</span>
+                    </div>
+                    <button onclick="addToCart('زبدة الشيا الخام الأصلية', 320, 'https://placehold.co/400x400/FAF7F2/D4A373?text=Shea+Butter')" class="md:hidden w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Card 3 -->
+            <div class="product-card bg-white rounded-3xl p-3 sm:p-4 border border-brand/10 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative" data-category="scrub">
+                <div>
+                    <div class="relative bg-brand-light rounded-2xl overflow-hidden aspect-square mb-3">
+                        <img src="https://placehold.co/400x400/EAF2EF/1B4D3E?text=Coconut+Scrub" alt="مقشر جوز الهند" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-2.5 right-2.5 bg-rose-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow">خصم 20%</span>
+                        <button onclick="toggleWishlist(this)" class="absolute top-2.5 left-2.5 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-brand hover:bg-rose-500 hover:text-white transition-all shadow-sm">
+                            <i class="fa-regular fa-heart text-xs"></i>
+                        </button>
+                        <div class="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button onclick="addToCart('مقشر جوز الهند المنعم', 240, 'https://placehold.co/400x400/EAF2EF/1B4D3E?text=Coconut+Scrub')" class="w-full bg-brand hover:bg-brand-dark text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition-all">
+                                <i class="fa-solid fa-plus text-[10px]"></i> أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 text-amber-500 text-xs mb-1">
+                        <i class="fa-solid fa-star"></i>
+                        <span class="font-bold text-brand text-xs">4.7</span>
+                        <span class="text-brand/40 text-[10px]">(84 تقييم)</span>
+                    </div>
+                    <h3 class="font-bold text-xs sm:text-sm text-brand mb-1 line-clamp-1">مقشر جوز الهند المنعم</h3>
+                    <p class="text-[11px] text-brand/60 mb-2">رائحة استوائية ونعومة فائقة</p>
+                </div>
+                <div class="flex items-center justify-between mt-2 pt-2 border-t border-brand/5">
+                    <div>
+                        <span class="text-xs text-brand/40 line-through ml-1.5">300 ج.م</span>
+                        <span class="text-sm font-extrabold text-brand">240 ج.م</span>
+                    </div>
+                    <button onclick="addToCart('مقشر جوز الهند المنعم', 240, 'https://placehold.co/400x400/EAF2EF/1B4D3E?text=Coconut+Scrub')" class="md:hidden w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Card 4 -->
+            <div class="product-card bg-white rounded-3xl p-3 sm:p-4 border border-brand/10 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative" data-category="soap bestseller">
+                <div>
+                    <div class="relative bg-brand-light rounded-2xl overflow-hidden aspect-square mb-3">
+                        <img src="https://placehold.co/400x400/FAF7F2/11221A?text=Olive+Soap" alt="صابون الزيتون" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-2.5 right-2.5 bg-brand text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow">الأكثر مبيعاً</span>
+                        <button onclick="toggleWishlist(this)" class="absolute top-2.5 left-2.5 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-brand hover:bg-rose-500 hover:text-white transition-all shadow-sm">
+                            <i class="fa-regular fa-heart text-xs"></i>
+                        </button>
+                        <div class="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button onclick="addToCart('صابون الزيتون الطبيعي التقليدي', 120, 'https://placehold.co/400x400/FAF7F2/11221A?text=Olive+Soap')" class="w-full bg-brand hover:bg-brand-dark text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition-all">
+                                <i class="fa-solid fa-plus text-[10px]"></i> أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 text-amber-500 text-xs mb-1">
+                        <i class="fa-solid fa-star"></i>
+                        <span class="font-bold text-brand text-xs">5.0</span>
+                        <span class="text-brand/40 text-[10px]">(210 تقييم)</span>
+                    </div>
+                    <h3 class="font-bold text-xs sm:text-sm text-brand mb-1 line-clamp-1">صابون الزيتون الطبيعي التقليدي</h3>
+                    <p class="text-[11px] text-brand/60 mb-2">تنظيف لطيف مناسب للبشرة الحساسة</p>
+                </div>
+                <div class="flex items-center justify-between mt-2 pt-2 border-t border-brand/5">
+                    <div>
+                        <span class="text-sm font-extrabold text-brand">120 ج.م</span>
+                    </div>
+                    <button onclick="addToCart('صابون الزيتون الطبيعي التقليدي', 120, 'https://placehold.co/400x400/FAF7F2/11221A?text=Olive+Soap')" class="md:hidden w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Card 5 -->
+            <div class="product-card bg-white rounded-3xl p-3 sm:p-4 border border-brand/10 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative" data-category="butter">
+                <div>
+                    <div class="relative bg-brand-light rounded-2xl overflow-hidden aspect-square mb-3">
+                        <img src="https://placehold.co/400x400/EAF2EF/D4A373?text=Argan+Oil" alt="زيت الأرجان النقي" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <button onclick="toggleWishlist(this)" class="absolute top-2.5 left-2.5 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-brand hover:bg-rose-500 hover:text-white transition-all shadow-sm">
+                            <i class="fa-regular fa-heart text-xs"></i>
+                        </button>
+                        <div class="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button onclick="addToCart('زيت الأرجان المغربي النقي', 450, 'https://placehold.co/400x400/EAF2EF/D4A373?text=Argan+Oil')" class="w-full bg-brand hover:bg-brand-dark text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition-all">
+                                <i class="fa-solid fa-plus text-[10px]"></i> أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 text-amber-500 text-xs mb-1">
+                        <i class="fa-solid fa-star"></i>
+                        <span class="font-bold text-brand text-xs">4.9</span>
+                        <span class="text-brand/40 text-[10px]">(67 تقييم)</span>
+                    </div>
+                    <h3 class="font-bold text-xs sm:text-sm text-brand mb-1 line-clamp-1">زيت الأرجان المغربي النقي</h3>
+                    <p class="text-[11px] text-brand/60 mb-2">للشعر والبشرة ببريق ذهبي طبيعي</p>
+                </div>
+                <div class="flex items-center justify-between mt-2 pt-2 border-t border-brand/5">
+                    <div>
+                        <span class="text-sm font-extrabold text-brand">450 ج.م</span>
+                    </div>
+                    <button onclick="addToCart('زيت الأرجان المغربي النقي', 450, 'https://placehold.co/400x400/EAF2EF/D4A373?text=Argan+Oil')" class="md:hidden w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Card 6 -->
+            <div class="product-card bg-white rounded-3xl p-3 sm:p-4 border border-brand/10 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative" data-category="vegan">
+                <div>
+                    <div class="relative bg-brand-light rounded-2xl overflow-hidden aspect-square mb-3">
+                        <img src="https://placehold.co/400x400/FAF7F2/1B4D3E?text=Rose+Water" alt="ماء الورد العضوي" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-2.5 right-2.5 bg-brand-accent text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow">عضوي</span>
+                        <button onclick="toggleWishlist(this)" class="absolute top-2.5 left-2.5 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-brand hover:bg-rose-500 hover:text-white transition-all shadow-sm">
+                            <i class="fa-regular fa-heart text-xs"></i>
+                        </button>
+                        <div class="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button onclick="addToCart('ماء الورد العضوي النقي', 150, 'https://placehold.co/400x400/FAF7F2/1B4D3E?text=Rose+Water')" class="w-full bg-brand hover:bg-brand-dark text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition-all">
+                                <i class="fa-solid fa-plus text-[10px]"></i> أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 text-amber-500 text-xs mb-1">
+                        <i class="fa-solid fa-star"></i>
+                        <span class="font-bold text-brand text-xs">4.8</span>
+                        <span class="text-brand/40 text-[10px]">(112 تقييم)</span>
+                    </div>
+                    <h3 class="font-bold text-xs sm:text-sm text-brand mb-1 line-clamp-1">ماء الورد العضوي النقي</h3>
+                    <p class="text-[11px] text-brand/60 mb-2">لانتعاش وتوازن دائم للبشرة</p>
+                </div>
+                <div class="flex items-center justify-between mt-2 pt-2 border-t border-brand/5">
+                    <div>
+                        <span class="text-sm font-extrabold text-brand">150 ج.م</span>
+                    </div>
+                    <button onclick="addToCart('ماء الورد العضوي النقي', 150, 'https://placehold.co/400x400/FAF7F2/1B4D3E?text=Rose+Water')" class="md:hidden w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Load More Section -->
+        <div class="text-center mb-16">
+            <button onclick="showToast('تم تحميل المزيد من المنتجات بنجاح! ✨')" class="bg-white hover:bg-brand hover:text-white text-brand border border-brand/20 font-bold text-xs px-8 py-3.5 rounded-full shadow-sm transition-all duration-300">
+                عرض المزيد من المنتجات (6 منتجات أخرى) ⬇️
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-brand text-white pt-12 pb-8 border-t border-brand/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-8 h-8 rounded-xl bg-brand-accent text-white flex items-center justify-center font-bold text-sm">N</div>
+                        <span class="font-bold text-base tracking-tight text-white">NEFERTARI</span>
+                    </div>
+                    <p class="text-xs text-white/70 leading-relaxed">
+                        منتجات طبيعية 100% للعناية بالجسم والبشرة بروح مصرية أصيلة ومعايير عالمية عصرية لجيل يقدر الجمال الطبيعي.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-brand-accent mb-3">روابط سريعة</h4>
+                    <ul class="space-y-2 text-xs text-white/80">
+                        <li><a href="#" class="hover:text-white transition-colors">قصة البراند</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">جميع المنتجات</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">دليل الاستخدام</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">تواصل معنا</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-brand-accent mb-3">خدمة العملاء</h4>
+                    <ul class="space-y-2 text-xs text-white/80">
+                        <li><a href="#" class="hover:text-white transition-colors">سياسة الشحن والتوصيل</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">الاسترجاع والاستبدال</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">الأسئلة الشائعة</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-brand-accent mb-3">كوني أول من يعلم ✨</h4>
+                    <p class="text-xs text-white/70 mb-3">اشتركي في النشرة البريدية للحصول على كود خصم 20%.</p>
+                    <div class="flex gap-2">
+                        <input type="email" placeholder="بريدك الإلكتروني..." class="bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-xs text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-brand-accent flex-1">
+                        <button onclick="showToast('تم اشتراكك بنجاح! مبروك كود الخصم 🎉')" class="bg-brand-accent hover:bg-opacity-90 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all">اشتراك</button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-white/50">
+                <p>© 2026 Nefertari Body Care. جميع الحقوق محفوظة لجيل Z.</p>
+                <div class="flex gap-4 mt-3 sm:mt-0">
+                    <a href="#" class="hover:text-white"><i class="fa-brands fa-instagram text-sm"></i></a>
+                    <a href="#" class="hover:text-white"><i class="fa-brands fa-tiktok text-sm"></i></a>
+                    <a href="#" class="hover:text-white"><i class="fa-brands fa-facebook text-sm"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODALS & OVERLAYS -->
+
+    <!-- Story Modal -->
+    <div id="storyModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-brand-cream w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl relative border border-white/20 animate-in fade-in zoom-in duration-200">
+            <button onclick="closeStoryModal()" class="absolute top-4 left-4 z-10 w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center hover:bg-black/60 transition-all">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+            <div class="h-96 relative bg-brand-dark flex items-center justify-center overflow-hidden">
+                <img id="storyImg" src="https://placehold.co/400x600/1B4D3E/FFFFFF?text=Story" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
+                    <h3 id="storyTitle" class="text-lg font-bold mb-2">عنوان القصة</h3>
+                    <p id="storyDesc" class="text-xs text-white/80 leading-relaxed">وصف تفصيلي للقصة يظهر للعميل عند النقر.</p>
+                </div>
+            </div>
+            <div class="p-4 bg-white flex justify-center">
+                <button onclick="closeStoryModal()" class="bg-brand text-white text-xs font-bold px-6 py-2.5 rounded-full w-full">إغلاق القصة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Drawer Modal -->
+    <div id="cartModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex justify-end">
+        <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between p-6 animate-in slide-in-from-left duration-300">
+            <div>
+                <div class="flex items-center justify-between pb-4 border-b border-brand/10">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-bag-shopping text-brand"></i>
+                        <h3 class="font-bold text-base text-brand">سلة التسوق (<span id="cartDrawerCount">0</span>)</h3>
+                    </div>
+                    <button onclick="closeCartModal()" class="w-8 h-8 rounded-full bg-brand-light text-brand flex items-center justify-center hover:bg-brand hover:text-white transition-all">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                </div>
+                <!-- Cart Items Container -->
+                <div id="cartItemsList" class="py-4 space-y-3 overflow-y-auto max-h-[60vh]">
+                    <div class="text-center py-12 text-brand/40 text-xs">
+                        <i class="fa-solid fa-basket-shopping text-3xl mb-2"></i>
+                        <p>سلة التسوق فارغة حالياً 🌿</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Cart Footer -->
+            <div class="border-t border-brand/10 pt-4">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs text-brand/60">المجموع الإجمالي:</span>
+                    <span id="cartTotalPrice" class="text-base font-extrabold text-brand">0 ج.م</span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-brand hover:bg-brand-dark text-white font-bold text-xs py-3.5 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2">
+                    <span>إتمام الطلب الآن</span>
+                    <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wishlist Modal -->
+    <div id="wishlistModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl relative">
+            <div class="flex items-center justify-between pb-4 border-b border-brand/10 mb-4">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-heart text-rose-500"></i>
+                    <h3 class="font-bold text-base text-brand">المفضلة المحفوظة (<span id="wishlistModalCount">0</span>)</h3>
+                </div>
+                <button onclick="closeWishlistModal()" class="w-8 h-8 rounded-full bg-brand-light text-brand flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+            <div id="wishlistItemsList" class="space-y-3 max-h-[50vh] overflow-y-auto">
+                <div class="text-center py-8 text-brand/40 text-xs">
+                    <i class="fa-regular fa-heart text-3xl mb-2"></i>
+                    <p>لا توجد منتجات في المفضلة بعد ❤️</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Message Box -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-brand text-white text-xs font-bold py-3 px-6 rounded-2xl shadow-2xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-brand-accent"></i>
+        <span id="toastMsg">تمت العملية بنجاح</span>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // State management
+        let cart = [];
+        let wishlist = [];
+
+        // Instant search toggle dropdown
+        const searchInput = document.getElementById('searchInput');
+        const searchDropdown = document.getElementById('searchDropdown');
+
+        searchInput.addEventListener('focus', () => {
+            searchDropdown.classList.remove('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+                searchDropdown.classList.add('hidden');
+            }
+        });
+
+        function selectSearchTag(tag) {
+            searchInput.value = tag;
+            searchDropdown.classList.add('hidden');
+            showToast('تم البحث عن: ' + tag);
+        }
+
+        // Filter Products by Category Chips
+        function filterProducts(category, btn) {
+            // Update active chip style
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('bg-brand', 'text-white');
+                b.classList.add('bg-white', 'text-brand', 'border', 'border-brand/15');
+            });
+            btn.classList.remove('bg-white', 'text-brand', 'border', 'border-brand/15');
+            btn.classList.add('bg-brand', 'text-white');
+
+            // Filter cards
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category.includes(category)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Story Modal Functions
+        function openStoryModal(title, desc) {
+            document.getElementById('storyTitle').innerText = title;
+            document.getElementById('storyDesc').innerText = desc;
+            document.getElementById('storyModal').classList.remove('hidden');
+        }
+
+        function closeStoryModal() {
+            document.getElementById('storyModal').classList.add('hidden');
+        }
+
+        // Cart Functions
+        function addToCart(name, price, img) {
+            const existing = cart.find(item => item.name === name);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ name, price, img, qty: 1 });
+            }
+            updateCartUI();
+            showToast('تمت إضافة "' + name + '" إلى السلة 🛍️');
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cartCount').innerText = totalCount;
+            document.getElementById('cartDrawerCount').innerText = totalCount;
+
+            const listContainer = document.getElementById('cartItemsList');
+            const totalPriceEl = document.getElementById('cartTotalPrice');
+
+            if (cart.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-12 text-brand/40 text-xs">
+                        <i class="fa-solid fa-basket-shopping text-3xl mb-2"></i>
+                        <p>سلة التسوق فارغة حالياً 🌿</p>
+                    </div>
+                `;
+                totalPriceEl.innerText = '0 ج.م';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price * item.qty;
+                html += `
+                    <div class="flex items-center gap-3 bg-brand-light/50 p-3 rounded-2xl border border-brand/10">
+                        <img src="${item.img}" class="w-14 h-14 object-cover rounded-xl">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-xs text-brand mb-1">${item.name}</h4>
+                            <span class="text-xs font-extrabold text-brand-accent">${item.price} ج.م</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="updateQty(${index}, -1)" class="w-6 h-6 rounded-full bg-white text-brand border border-brand/20 flex items-center justify-center text-xs">-</button>
+                            <span class="text-xs font-bold">${item.qty}</span>
+                            <button onclick="updateQty(${index}, 1)" class="w-6 h-6 rounded-full bg-white text-brand border border-brand/20 flex items-center justify-center text-xs">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+            listContainer.innerHTML = html;
+            totalPriceEl.innerText = total + ' ج.م';
+        }
+
+        function updateQty(index, change) {
+            cart[index].qty += change;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        }
+
+        function openCartModal() {
+            document.getElementById('cartModal').classList.remove('hidden');
+        }
+
+        function closeCartModal() {
+            document.getElementById('cartModal').classList.add('hidden');
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showToast('السلة فارغة أضيفي منتجات أولاً!');
+                return;
+            }
+            showToast('جاري تحويلك لبوابة الدفع الآمنة 🚀');
+            setTimeout(() => {
+                cart = [];
+                updateCartUI();
+                closeCartModal();
+            }, 1500);
+        }
+
+        // Wishlist Functions
+        function toggleWishlist(btn) {
+            const icon = btn.querySelector('i');
+            const card = btn.closest('.product-card');
+            const name = card.querySelector('h3').innerText;
+            const price = card.querySelector('.font-extrabold').innerText;
+            const img = card.querySelector('img').src;
+
+            if (icon.classList.contains('fa-regular')) {
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid', 'text-rose-500');
+                wishlist.push({ name, price, img });
+                showToast('تمت الإضافة للمفضلة ❤️');
+            } else {
+                icon.classList.remove('fa-solid', 'text-rose-500');
+                icon.classList.add('fa-regular');
+                wishlist = wishlist.filter(item => item.name !== name);
+                showToast('تمت الإزالة من المفضلة 💔');
+            }
+            updateWishlistUI();
+        }
+
+        function updateWishlistUI() {
+            document.getElementById('wishlistCount').innerText = wishlist.length;
+            document.getElementById('wishlistModalCount').innerText = wishlist.length;
+
+            const listContainer = document.getElementById('wishlistItemsList');
+            if (wishlist.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="text-center py-8 text-brand/40 text-xs">
+                        <i class="fa-regular fa-heart text-3xl mb-2"></i>
+                        <p>لا توجد منتجات في المفضلة بعد ❤️</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            wishlist.forEach(item => {
+                html += `
+                    <div class="flex items-center gap-3 bg-brand-light/50 p-3 rounded-2xl border border-brand/10">
+                        <img src="${item.img}" class="w-12 h-12 object-cover rounded-xl">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-xs text-brand mb-1">${item.name}</h4>
+                            <span class="text-xs font-extrabold text-brand-accent">${item.price}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            listContainer.innerHTML = html;
+        }
+
+        function openWishlistModal() {
+            document.getElementById('wishlistModal').classList.remove('hidden');
+        }
+
+        function closeWishlistModal() {
+            document.getElementById('wishlistModal').classList.add('hidden');
+        }
+
+        // Toast Message Notification System
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
